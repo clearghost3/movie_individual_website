@@ -66,8 +66,13 @@ main {
 
 .review {
     border: solid 8px lightgrey;
-    padding:10px;
+    padding:30px;
     margin:20px;
+}
+
+.horizontal_division {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
 .user_info {
@@ -88,6 +93,11 @@ main {
     width: 1200px;
 }
 
+.review_modify {
+    position: absolute;
+
+}
+
 
 button {
     border-radius: 5px;
@@ -96,6 +106,22 @@ button {
 .pink_btn {
     border: 3px solid #F2A7B5;
     background-color: #F2A7B5;
+    color: white;
+    margin: 10px;
+    padding: 9px;
+}
+
+.powderblue_btn {
+    border: 3px solid powderblue;
+    background-color: powderblue;
+    color: black;
+    margin: 5px;
+    padding: 9px;
+}
+
+.red_btn {
+    border: 3px solid red;
+    background-color: red;
     color: white;
     margin: 10px;
     padding: 9px;

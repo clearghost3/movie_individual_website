@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style/details.css">
+    <link rel="stylesheet" href="style/fontstyle/fontstyle.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <!--영화 검색창-->
+
+    <div id="header">
+        <h1 class="merriweather-bold" style="border: solid pink 9px; padding: 7px;width: 800px;">Search a Movie, Such a
+            Movie</h1>
+
+        <div id="input_moviename">
+            <form class="form-floating">
+                <input type="email" class="form-control" id="floatingInputValue" placeholder="영화 제목 입력"
+                    value="영화 제목 입력">
+                <label for="floatingInputValue">영화 제목 입력</label>
+            </form>
+            <button type="button" class="pink_btn" style="font-size:18px;margin-top:5px;">search</button>
+        </div>
+    </div>
+
+    <main>
+        <!--영화 상세 소개 블럭-->
+        <div id="detailed_introduction">
+            <img id="movie_image" src="assets/sample.png">
+            <div id="movie_info">
+                <h2 class="info" id="movie_title">
+
+                </h2>
+                <div class="info" id="movie_contents" style="font-size:20px;">
+                    content
+                </div>
+
+                <!--모달창-->
+                <div class="modal">
+                    <div class="modal_body">
+                        <div class="modal_title merriweather-bold" style="font-size: 30px; color:rgb(235, 142, 158)">
+                            Write the review
+                        </div>
+
+                        <div class="write_tile">
+                            <span>비밀번호: </spen> <input id="user_pwd" class="user_input" type="input"> <br>
+                            <span>닉네임:&nbsp;&nbsp;&nbsp;</span> <input id="user_nickname" class="user_input"
+                                    type="input"> <br>
+                            <span>영화 별점:</span> <input id="user_rating" class="user_input" type="input"> <br>
+                            <span>리뷰 내용:</span> <input id="user_comments" class="user_input" type="input"> <br>
+                        </div>
+                        <div class="close_modal">
+                            <button type="button" id="Complete_modal" class="pink_btn">작성 완료</button>
+                            <button type="button" id="close_modal" class="pink_btn">작성창 닫기</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--리뷰 작성하기 버튼-->
+                <button id="movie_write" type="button" class="pink_btn" style="width: 100%; font-size: 70px;">
+                    Write review
+                </button>
+
+            </div>
+        </div>
+
+
+
+        <!--리뷰 블럭-->
+        <div id="reviewbox">
+            <button class="pink_btn" id="review_btn">Review</button>
+            리뷰내역
+
+            <div class="review">
+                <div class="user_info">
+                    <div class="user_name">user_name: Dal</div>
+                    <div class="user_rating">score: ⭐⭐⭐⭐⭐</div>
+                </div>
+                <p class="review_comments">
+                    사람은 자신이 피해자라고 생각하는것엔 매우 민감하지만, 가해자라고 깨닫는것은 어렵다. - 사카모토 유지 (각본가)<br>오랜만에 극장에서 좋은 영화를 본것같다
+                </p>
+            </div>
+
+
+
+
+        </div>
+
+        <div id="adminstrator pannel">
+            <script> for (let i = 0; i < 40; i++) document.write("<br>"); </script>
+
+            <button type="button" class="pink_btn"><a href="index.html" style="text-decoration: none; color: white;">더
+                    많은 영화
+                    구경하러 가기</a></button>
+            <button type="button" class="pink_btn" id="local_init">초기화 버튼</button>
+            <button type="button" class="pink_btn" id="Call_Data">남은 데이터 확인,영화이름</button>
+        </div>
+    </main>
+</body>
+
+
+<script type="module">
+
+    function reviewmaker(user_name,user_rating,review_comments) {    //새로운 리뷰 추가
+        const Reviewbox = document.getElementById('reviewbox');
+
+        const User_name = document.createElement('div');
+        User_name.classList.add('user_name');
+        User_name.textContent=user_name;
+
+        const User_rating = document.createElement('div');
+        User_rating.classList.add('user_rating');
+        User_rating.textContent = user_rating;
+
+        const User_info = document.createElement('div');
+        User_info.classList.add('user_info');
+
+        const Review_comments = document.createElement('p');
+        Review_comments.classList.add('review_comments');
+        Review_comments.textContent = review_comments;
+
+        const Review = document.createElement('div');
+        Review.classList.add('review');
+
+        User_info.appendChild(User_name);
+        User_info.appendChild(User_rating);
+
+        Review.appendChild(User_info);
+        Review.appendChild(Review_comments);
+
+        Reviewbox.appendChild(Review);
+    }
+
+    //======================모달창 관련=================//
+
+    //Write review 버튼을 입력했을 때 -> 모달창 나옴
+    document.getElementById('movie_write').addEventListener('click', function (event) {
+        const modal = document.querySelector('.modal');
+        if (modal.style.display === "flex") {
+            modal.style.display = 'none';
+        }
+        else
+            modal.style.display = "flex";
+    })
+
+    //모달창에서 작성창 닫기 버튼을 눌렀을 때
+    document.getElementById('close_modal').addEventListener('click', function () {
+        document.querySelector('.modal').style.display = "none";
+    });
+    //모달창에서 작성 완료 버튼을 눌렀을 때
+    document.getElementById("Complete_modal").addEventListener('click', function () {
+        //입력한 정보를 받아옴
+        const Pwd=document.getElementById("user_pwd").value;
+        const Name=document.getElementById("user_nickname").value;
+        const Rating=document.getElementById("user_rating").value;
+        const Comments=document.getElementById("user_comments").value;
+
+        //영화 리뷰에 관한 정보
+        const Review = {
+            "movie_title":movie_title,
+            "pwd":Pwd,
+            "name":Name,
+            "rating":Rating,
+            "comments":Comments,
+        }
+
+        let Reviewarr = window.localStorage.getItem("reviewarr");  //유저정보들을 저장하는 데이터의 키값:reviewarr
+
+        if (Reviewarr === null) {
+            //유저정보'들'을 저장하는 객체
+            const arr = [];
+            const arrString = JSON.stringify(arr);
+
+            window.localStorage.setItem("reviewarr", arrString);
+            Reviewarr=localStorage.getItem("reviewarr");
+        }
+        Reviewarr=JSON.parse(Reviewarr);
+        Reviewarr.push(Review);
+        //정보를 추가한 뒤 다시 저장
+        localStorage.setItem("reviewarr",JSON.stringify(Reviewarr));
+
+        //모달창 닫기
+        document.querySelector('.modal').style.display = "none";
+        
+        alert("성공적으로 기록되었습니다!");
+
+    })
+
+    //======================모달창 관련=================//
+
+    //영화를 입력할 때
+    document.getElementById("floatingInputValue").addEventListener("keypress", function (event) {
+        if (event.key == "Enter") {
+            let textvalue = document.getElementById("floatingInputValue").value;
+            document.getElementById("floatingInputValue").value = null;
+            event.preventDefault();
+        }
+    });
+
+    //초기화 버튼을 누를 때
+    document.getElementById("local_init").addEventListener("click", function () {
+        window.localStorage.clear();
+        alert("successfully removed on all windows");
+    })
+    //남은 데이터 버튼을 누를 때
+    document.getElementById("Call_Data").addEventListener("click",function () {
+        let tape=window.localStorage.getItem("movie_title");
+        console.log(tape);
+    })
+
+
+
+    //로컬 스토리지에 저장한 파일 불러와서 붙이기
+    const movie_title = window.localStorage.getItem("movie_title");
+    const movie_image = `https://image.tmdb.org/t/p/w500${window.localStorage.getItem("movie_image")}`;
+    const movie_explain = window.localStorage.getItem("movie_review");
+
+    document.getElementById("movie_title").innerHTML = movie_title;
+    document.getElementById("movie_image").src = movie_image;
+    document.getElementById("movie_contents").innerHTML = movie_explain;
+
+
+
+    //test mode
+    let reviews=window.localStorage.getItem("reviewarr");
+    reviews=JSON.parse(reviews);
+    reviews.forEach(review => {
+        if (review.movie_title===movie_title)   {
+            reviewmaker(review.name,review.rating,review.comments);
+        }
+        
+    });
+    console.log(reviews);
+</script>
+
+</html>

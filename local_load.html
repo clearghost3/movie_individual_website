@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1><a href="test_loacalstorage3.html">button2</a></h1>
+    <button id="loaddata_btn">if you press this button, load the value on localstrage.</button>
+
+
+
+
+</body>
+
+<script type="module">
+    let response;
+    document.getElementById('loaddata_btn').addEventListener("click",function () {
+        response= window.localStorage.getItem("reviewarr");
+        alert("successfully load");
+        console.log(response);
+    })
+    
+</script>
+</html>

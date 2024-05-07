@@ -1,12 +1,11 @@
-const Pwd="hello.@yunh";
-const Name="김철수"
-const Rating="5점"
-const Comments="정말 재미있었어요"
-const Review = {
-    pwd:Pwd,
-    "name":Name,
-    "rating":Rating,
-    "comments":Comments,
+function fill_one_array(array,index) {
+    while (array[index+1]!==undefined) {
+        array[index]=array[index+1];
+        index++;
+    }
+    array.pop();
+    return array;
 }
-
-console.log(Review["pwd"]);
+let a=[0,1,2,3,4,5,6];
+fill_one_array(a,3)
+console.log(a);

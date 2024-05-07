@@ -44,13 +44,59 @@
                     content
                 </div>
 
-                <!--모달창-->
-                <div class="modal">
+                <!--=========================모달창 3개=======================-->
+                <!--리뷰 수정을 눌렀을 때-->
+                <div id="write_modify" class="modal">
+                    <div class="modal_body">
+                        <div class="modal_title merriweather-bold" style="font-size: 30px; color:rgb(235, 142, 158)">
+                            modify your review
+                        </div>
+
+                        <div class="write_tile">
+                            <span>비밀번호: </spen> <input id="modify_user_pwd" class="user_input" type="password"> <br>
+                                <span>닉네임:&nbsp;&nbsp;&nbsp;</span> <input id="modify_user_nickname" class="user_input"
+                                    type="input"> <br>
+                                <span>영화 별점:</span> <select name="ratings" id="modify_user_rating" class="user_input">
+                                    <option value="⭐">⭐</option>
+                                    <option value="⭐⭐">⭐⭐</option>
+                                    <option value="⭐⭐⭐">⭐⭐⭐</option>
+                                    <option value="⭐⭐⭐⭐">⭐⭐⭐⭐</option>
+                                    <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐</option>
+                                </select> <br>
+                                <span>리뷰 내용:</span> <input id="modify_user_comments" class="user_input" type="input">
+                                <br>
+                        </div>
+                        <div class="close_modal">
+                            <button type="button" id="modify_Complete_modal" class="pink_btn">작성 완료</button>
+                            <button type="button" id="modify_close_modal" class="pink_btn">작성창 닫기</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--리뷰 삭제를 눌렀을 때-->
+                <div id="input_password" class="modal">
+                    <div class="modal_body">
+                        <div class="modal_title merriweather-bold" style="font-size: 30px; color:rgb(235, 142, 158)">
+                            Delete your review
+                        </div>
+
+                        <div class="write_tile">
+                            <span>비밀번호: </spen> <input id="pwd_check" class="user_input" type="password">
+                        </div>
+
+                        <div class="close_modal">
+                            <button type="button" id="password_Complete_modal" class="pink_btn">작성 완료</button>
+                            <button type="button" id="password_close_modal" class="pink_btn">작성창 닫기</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Write review를 눌렀을 때-->
+                <div id="write_review" class="modal">
                     <div class="modal_body">
                         <div class="modal_title merriweather-bold" style="font-size: 30px; color:rgb(235, 142, 158)">
                             Write the review
                         </div>
-
                         <div class="write_tile">
                             <span>비밀번호: </spen> <input id="user_pwd" class="user_input" type="password"> <br>
                                 <span>닉네임:&nbsp;&nbsp;&nbsp;</span> <input id="user_nickname" class="user_input"
@@ -70,6 +116,7 @@
                         </div>
                     </div>
                 </div>
+                <!--=========================모달창=======================-->
 
                 <!--리뷰 작성하기 버튼-->
                 <button id="movie_write" type="button" class="pink_btn" style="width: 100%; font-size: 70px;">
@@ -82,10 +129,12 @@
 
 
         <!--리뷰 블럭-->
+
         <div id="reviewbox">
             <button class="pink_btn" id="review_btn">Review</button>
             리뷰내역
 
+            <!--
             <div class="review">
                 <div class="user_info">
                     <div class="user_name">user_name: Dal</div>
@@ -95,10 +144,10 @@
                 <p class="review_comments">
                     사람은 자신이 피해자라고 생각하는것엔 매우 민감하지만, 가해자라고 깨닫는것은 어렵다. - 사카모토 유지 (각본가)<br>오랜만에 극장에서 좋은 영화를 본것같다
                 </p>
-                <button class="powderblue_btn">리뷰 수정</button>
-                <button class="red_btn">리뷰 삭제</button>
+                <button class="powderblue_btn review_modify">리뷰 수정</button>
+                <button class="red_btn review_delete">리뷰 삭제</button>
             </div>
-
+            -->
 
 
 
@@ -137,14 +186,16 @@
         Review_comments.classList.add('review_comments');
         Review_comments.textContent = review_comments;
 
-        const Review_modify=document.createElement('button');
+        const Review_modify = document.createElement('button');
         Review_modify.classList.add('powderblue_btn');
-        Review_modify.textContent="리뷰 수정";
+        Review_modify.classList.add('review_modify');
+        Review_modify.textContent = "리뷰 수정";
 
-        const Review_delete=document.createElement('button');
+        const Review_delete = document.createElement('button');
         Review_delete.classList.add('red_btn');
-        Review_delete.textContent="리뷰 삭제";
-        
+        Review_delete.classList.add('review_delete');
+        Review_delete.textContent = "리뷰 삭제";
+
         const Review = document.createElement('div');
         Review.classList.add('review');
 
@@ -159,11 +210,126 @@
         Reviewbox.appendChild(Review);
     }
 
-    //======================모달창 관련=================//
+    //빈공간 메꾸기 함수
+    function fill_one_array(array, index) {
+        while (array[index + 1] !== undefined) {
+            array[index] = array[index + 1];
+            index++;
+        }
+        array.pop();
+        return array;
+    }
+
+
+    //로컬 스토리지에 저장한 파일 불러와서 붙이기
+    const movie_title = window.localStorage.getItem("movie_title");
+    const movie_image = `https://image.tmdb.org/t/p/w500${window.localStorage.getItem("movie_image")}`;
+    const movie_explain = window.localStorage.getItem("movie_review");
+
+    document.getElementById("movie_title").innerHTML = movie_title;
+    document.getElementById("movie_image").src = movie_image;
+    document.getElementById("movie_contents").innerHTML = movie_explain;
+
+
+    //영화의 이름을 키값으로 검색하여 리뷰들을 가져오기
+    let Reviews = JSON.parse(localStorage.getItem(movie_title));
+    if (Reviews !== null) {
+        Reviews.forEach(data => {
+            reviewmaker(data.name, data.rating, data.comments); //user_name, user_rating, review_comments
+        });
+    }
+
+
+    //리뷰에서 수정 버튼을 눌렀을 때 (구현중)
+    let Modify_buttons = document.querySelectorAll('.review_modify');
+    for (let i = 0; i < Modify_buttons.length; i++) {
+        Modify_buttons[i].addEventListener('click', function () {
+
+            let modal=document.getElementById('write_modify');
+            modal.style.display = 'flex';
+            console.log(`${i}번째 버튼에서 Modify 발생!`);
+
+
+            document.getElementById('modify_Complete_modal').addEventListener('click',function () {
+                let pwd=document.getElementById('modify_user_pwd').value;
+                let nickname=document.getElementById('modify_user_nickname').value;
+                let rating=document.getElementById('modify_user_rating').value;
+                let comments=document.getElementById('modify_user_comments').value;
+
+                if (pwd===Reviews[i].pwd) {
+                    Reviews[i].name=nickname;
+                    Reviews[i].rating=rating;
+                    Reviews[i].comments=comments;
+                    localStorage.setItem(movie_title,JSON.stringify(Reviews));
+
+                    alert("수정 완료");
+                    modal.style.display='none';
+                }
+                else{
+                    alert("비밀번호가 틀립니다! 다시 입력하세요.");
+                }
+                
+
+                console.log(pwd+nickname+rating+comments);
+            })
+
+            //닫기 버튼
+            document.getElementById('modify_close_modal').addEventListener('click',function () {
+                modal.style.display='none';
+            })
+        })
+    }
+
+
+    //리뷰에서 삭제 버튼을 눌렀을 때
+    let Delete_buttons = document.querySelectorAll('.review_delete');
+
+    for (let i = 0; i < Delete_buttons.length; i++) {
+        Delete_buttons[i].addEventListener('click', function () {
+            console.log(`${i}번째 버튼에서 Delete 발생!`);
+
+            //비밀번호 모달창
+            let modal=document.getElementById('input_password');
+            modal.style.display = "flex";
+
+            document.getElementById('password_Complete_modal').addEventListener('click', function () {
+                let input_password = document.getElementById('pwd_check').value;
+                
+                if (input_password === Reviews[i].pwd) {//비밀번호가 맞은 경우
+                    //삭제 과정
+                    fill_one_array(Reviews, i);
+
+                    //변경된 리뷰데이터를 기존 키값에 다시 저장
+                    window.localStorage.setItem(movie_title, JSON.stringify(Reviews));
+                    modal.style.display="none";
+                }
+                else     //비밀번호가 틀린 경우
+                    alert("비밀번호가 틀립니다! 다시 입력하세요.");
+            })
+
+            //닫기 버튼
+            document.getElementById('password_close_modal').addEventListener('click',function () {
+                modal.style.display="none";
+            })
+
+            /*
+            
+            //삭제 과정
+            fill_one_array(Reviews, i);
+
+            //변경된 리뷰데이터를 기존 키값에 다시 저장
+            window.localStorage.setItem(movie_title, JSON.stringify(Reviews));
+            */
+        })
+
+    }
+
+
+    //====================== Write review 모달창 관련=================//
 
     //Write review 버튼을 입력했을 때 -> 모달창 나옴
     document.getElementById('movie_write').addEventListener('click', function (event) {
-        const modal = document.querySelector('.modal');
+        const modal = document.getElementById('write_review');
         if (modal.style.display === "flex") {
             modal.style.display = 'none';
         }
@@ -173,7 +339,7 @@
 
     //모달창에서 작성창 닫기 버튼을 눌렀을 때
     document.getElementById('close_modal').addEventListener('click', function () {
-        document.querySelector('.modal').style.display = "none";
+        document.getElementById('write_review').style.display = "none";
     });
     //모달창에서 작성 완료 버튼을 눌렀을 때
     document.getElementById("Complete_modal").addEventListener('click', function () {
@@ -199,29 +365,29 @@
             "comments": Comments,
         }
 
-        let Reviewarr = window.localStorage.getItem("reviewarr");  //유저정보들을 저장하는 데이터의 키값:reviewarr
+        let Reviews = window.localStorage.getItem(movie_title);  //유저정보들을 저장하는 데이터의 키값은 '변수',movie_title
 
-        if (Reviewarr === null) {
+        if (Reviews === null) {       //로컬 스토리지에 공간이 없을 경우 공간을 만듬
             //유저정보'들'을 저장하는 객체
             const arr = [];
             const arrString = JSON.stringify(arr);
 
-            window.localStorage.setItem("reviewarr", arrString);
-            Reviewarr = localStorage.getItem("reviewarr");
+            window.localStorage.setItem(movie_title, arrString);    //영화의 이름을 키값으로 지정
+            Reviews = localStorage.getItem(movie_title);
         }
-        Reviewarr = JSON.parse(Reviewarr);
-        Reviewarr.push(Review);
+        Reviews = JSON.parse(Reviews);
+        Reviews.push(Review);
         //정보를 추가한 뒤 다시 저장
-        localStorage.setItem("reviewarr", JSON.stringify(Reviewarr));
+        localStorage.setItem(movie_title, JSON.stringify(Reviews));
 
         //모달창 닫기
-        document.querySelector('.modal').style.display = "none";
+        document.getElementById('write_review').style.display = "none";
 
         alert("성공적으로 기록되었습니다!");
 
     })
 
-    //======================모달창 관련=================//
+    //====================== Write review 모달창 관련=================//
 
     //영화를 입력할 때
     document.getElementById("floatingInputValue").addEventListener("keypress", function (event) {
@@ -245,30 +411,8 @@
 
 
 
-    //로컬 스토리지에 저장한 파일 불러와서 붙이기
-    const movie_title = window.localStorage.getItem("movie_title");
-    const movie_image = `https://image.tmdb.org/t/p/w500${window.localStorage.getItem("movie_image")}`;
-    const movie_explain = window.localStorage.getItem("movie_review");
-
-    document.getElementById("movie_title").innerHTML = movie_title;
-    document.getElementById("movie_image").src = movie_image;
-    document.getElementById("movie_contents").innerHTML = movie_explain;
 
 
-
-    //리뷰들을 순회하여 영화와 관련있는 리뷰만을 분류하여 가져오기
-    let reviews = window.localStorage.getItem("reviewarr");
-    let curr_reviews=[];
-
-    reviews = JSON.parse(reviews);
-    reviews.forEach(review => {
-        if (review.movie_title === movie_title) {
-            reviewmaker(review.name, review.rating, review.comments);
-            curr_reviews.push(review);
-        }
-
-    });
-    console.log(reviews);
 </script>
 
 </html>

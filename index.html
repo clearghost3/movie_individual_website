@@ -127,6 +127,7 @@
       image.onclick = function () {
         console.log("start");
         alert(`id: ${movie_id}`);
+        
         //클릭하면 로컬 스토리지에 그 영화에 대한 정보 저장하기
         window.localStorage.setItem("movie_title", movie_title);
         window.localStorage.setItem("movie_review", movie_review);
@@ -213,11 +214,12 @@
           image.src = `https://image.tmdb.org/t/p/w500${movie_image}`;
           image.alt = "인식되지 않음";
           image.onclick = function () {
+            
             //클릭하면 로컬 스토리지에 그 영화에 대한 정보 저장하기
             window.localStorage.setItem("movie_title", movie_title);
             window.localStorage.setItem("movie_review", movie_review);
             window.localStorage.setItem("movie_image", movie_image);
-            window.localStorage.setItem("moive_rating", movie_rating);
+            window.localStorage.setItem("moive_rating", Number(movie_rating));
 
             //그리고 상세페이지라는 새 웹사이트 열기
             window.open("details.html", "_blank");

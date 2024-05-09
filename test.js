@@ -1,11 +1,15 @@
-function fill_one_array(array,index) {
-    while (array[index+1]!==undefined) {
-        array[index]=array[index+1];
-        index++;
+function text_measure(a,b) {
+    let i=0;
+    a=a.toLowerCase();
+    b=b.toLowerCase();
+    while (a[i]) {
+        if (a[i]!==b[i]) return false;
+        i++;
     }
-    array.pop();
-    return array;
+    return true;
 }
-let a=[0,1,2,3,4,5,6];
-fill_one_array(a,3)
-console.log(a);
+
+let strA="hello";
+let strB="heLLo";
+
+console.log(text_measure(strA,strB));
